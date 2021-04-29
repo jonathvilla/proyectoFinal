@@ -1,0 +1,72 @@
+<div class="container" id="advanced-search-form">
+    <ng-container *ngIf="!crearCliente; else formClientes">
+    <button type="button" class="btn btn-dark btn-sm" (click)="mostrarClientes()">Crear Clientes</button>
+    <table datatable [dtOptions]="dtOptions" class="row-border hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          <th>Documento</th>
+          <th>Dirección</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of lstCliente">
+          <td>{{ item.id }}</td>
+          <td>{{ item.nombre }}</td>
+          <td>{{ item.apellido }}</td>
+          <td>{{ item.documento }}</td>
+          <td>{{ item.direccion }}</td>
+          <td>{{ item.estado? 'Activo': 'Inactivo' }}</td>
+          <td>
+              <button type="button" class="btn btn-dark btn-sm" (click)="editCliente(item)">Editar</button>
+              <button type="button" class="btn btn-outline-danger btn-sm" style="margin-left: 1%;" (click)="desactivarCliente(item)">Deshabilitar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</ng-container>
+<ng-template #formClientes>
+    <button type="button" class="btn btn-dark btn-sm" (click)="crearCliente = false">Ver clientes</button>
+    <form [formGroup] = "formulario">
+        <div class="form-group row">
+          <label for="staticEmail" class="col-sm-2 col-form-label">Nombres</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" formControlName="Nombre" [ngClass]="{ 'is-invalid': submitted && f.Nombre.errors }" placeholder="Nombres">
+            <div *ngIf="submitted && f.Nombre.errors" class="invalid-feedback">
+              <div *ngIf="f.Nombre.errors.required">El nombre es requerido</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Apellidos</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" formControlName="Apellido" placeholder="Apellidos">
+          </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Documento</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control"  formControlName="Documento" placeholder="Documento">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Dirección</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control"  formControlName="Direccion" placeholder="Dirección">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <button type="button" *ngIf="!btnEditar" (click) = "AddCliente()" class="btn btn-secondary" >Guardar</button>
+                <button type="button" *ngIf="btnEditar" (click) = "updateCliente()" class="btn btn-secondary" >Editar</button>
+                <button type="button" class="btn btn-outline-dark" style="margin-left: 2%;" (click) = "resetFormulario()">Cancelar</button>
+            </div>
+          </div>
+      </form>
+  </ng-template>
+</div>
