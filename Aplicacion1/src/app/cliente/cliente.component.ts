@@ -17,11 +17,15 @@ export class ClienteComponent implements OnInit {
   submitted:boolean = false;
   btnEditar: boolean = false;
   constructor(private formBuilder:FormBuilder, private apiCliente: ApiClienteService) { }
+
   formulario = this.formBuilder.group({
-    Nombre: ['',Validators.required],
-    Apellido: ['',Validators.required],
-    Documento: ['',Validators.required],
-    Direccion: ['',Validators.required]
+    direccion: ['',Validators.required],
+    telefono: ['',Validators.required],
+    nombre: ['',Validators.required],
+    email: ['',Validators.required],
+    nroDeIdentificacion: ['',Validators.required],
+    temaInteres: ['',Validators.required],
+    estado: ['',Validators.required]
   })
   ngOnInit(): void {
     this.dtOptions = {
@@ -51,9 +55,9 @@ export class ClienteComponent implements OnInit {
 
   AddCliente() {
     this.submitted = true;
-    if (this.formulario.invalid) {
+    if (this.f.invalid) {
       return;
-    }
+    } 
 
     Swal.fire({
       title: 'Cliente',
@@ -67,7 +71,8 @@ export class ClienteComponent implements OnInit {
       {
     
         this.cliente = Object.assign(this.cliente, this.formulario.value);
-        console.log(this.cliente);
+        this.cliente.estado = true;
+       // console.log(this.cliente);
         this.apiCliente.addCliente(this.cliente).subscribe(response => {
           if(response.exito == 0){
             console.log(response.mensaje);
@@ -89,16 +94,24 @@ export class ClienteComponent implements OnInit {
 
   }
   editCliente(oCliente: Cliente){
-    this.formulario.controls.Nombre.setValue(oCliente.nombre)
-    this.formulario.controls.Apellido.setValue(oCliente.apellido)
-    this.formulario.controls.Documento.setValue(oCliente.documento)
-    this.formulario.controls.Direccion.setValue(oCliente.direccion)
+  
+    console.log(oCliente);
+
+    this.f.direccion.setValue(oCliente.direccion);
+    this.f.telefono.setValue(oCliente.telefono);
+    this.f.nombre.setValue(oCliente.nombre);
+    this.f.email.setValue(oCliente.email);
+    this.f.nroDeIdentificacion.setValue(oCliente.nroDeIdentificacion);
+    this.f.temaInteres.setValue(oCliente.temaInteres); 
+  
+
     this.crearCliente = true;
     this.cliente.id = oCliente.id;
     this.btnEditar=true;
   }
   updateCliente(){
     this.cliente = Object.assign(this.cliente, this.formulario.value);
+    this.cliente.estado = true;
     this.apiCliente.updateCliente(this.cliente).subscribe(response=>{
       if(response.exito == 0){
         console.log(response.mensaje);

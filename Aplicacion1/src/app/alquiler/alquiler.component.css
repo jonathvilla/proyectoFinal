@@ -10,7 +10,7 @@ body {
 
 #advanced-search-form {
     background-color: #fff;
-    max-width: -800px;
+    max-width: 900px;
     /* margin: 160px auto 0; */
     padding: 40px;
     color: #858b8e;
@@ -72,7 +72,7 @@ input {
     border-radius: 4px;
 }
 
-@media screen and (max-width:800px) {
+@media screen and (max-width: 800px) {
     #advanced-search-form .form-group {
         width: 45%;
     }

@@ -1,0 +1,92 @@
+<div class="container" id="advanced-search-form">
+    <ng-container *ngIf="!crearAlquiler else formAlquiler">
+        <button type="button" class="btn btn-dark btn-sm" (click)="crearAlquiler = true">crear alquiler</button>
+        <table datatable [dtOptions]="dtOptions" class="row-border hover">
+            <thead>
+                <tr>
+                    <th>Código de Alquiler</th>
+                    <th>FechaAlquiler</th>
+                    <th>Cliente</th>
+                    <th>Nombre del cd</th>
+                    <th>Valor alquiler</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of lstAlquiler">
+                    <td>{{ item.CodigoAlquiler }}</td>
+                    <td>{{ item.FechaAlquiler.substring(0,10) }}</td>
+                    <td>{{ item.Cliente.nombre + ' ' + item.cliente.apellido }}</td>
+                    <td>{{ item.CdId }}</td>
+                    <td>{{ item.diasAlquiler }}</td>
+                    <td>{{ item.ValorAlquiler }}</td>
+                    <td>
+                        <button type="button" class="btn btn-dark btn-sm" (click)="detalleAlquiler(item.detalleAlquiler, item.CodigoAlquiler)">Detalle</button>
+                        <button *ngIf="item.fechaAlquiler < fechaActual" type="button" class="btn btn-outline-danger btn-sm" style="margin-left: 1%;" (click)="sancionar(item.cliente.Id, item.Id)">Sancionar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <div *ngIf="mostrarDetalle">
+            <button type="button" class="btn btn-dark btn-sm" (click)="mostrarDetalle = false">ocultar detalle</button>
+            <app-detalle-alquiler [lstDetalles]="detalle_Alquiler()" [codigo]="codigo_Alquiler"></app-detalle-alquiler>
+        </div>
+    </ng-container>
+
+    <ng-template #formAlquiler>
+        <button type="button" class="btn btn-dark btn-sm" (click)="crearAlquiler = false">Ver alquiler</button>
+        <form [formGroup]="formulario">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Código alquiler</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" formControlName="CodigoAlquiler" [ngClass]="{ 'is-invalid': submitted && f.CodigoAlquiler.errors }" placeholder="Código Alquiler">
+                    <div *ngIf="submitted && f.CodigoAlquiler.errors" class="invalid-feedback">
+                        <div *ngIf="f.CodigoAlquiler.errors.required">El código es requerido</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Fecha Alquiler</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" formControlName="FechaAlquiler" placeholder="Fecha Alquiler">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Clientes</label>
+                <div class="col-sm-10">
+                    <select class="form-control" formControlName="ClienteId" [ngClass]="{ 'is-invalid': submitted && f.ClienteId.errors }">
+                        <option *ngFor="let item of lstClientes;" [value]="item.id" >{{item.nombre + ' ' + item.apellido}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">CDS</label>
+                <div class="col-sm-10">
+                    <select class="form-control" formControlName="CdId" multiple [ngClass]="{ 'is-invalid': submitted && f.CdId.errors }">
+                        <option *ngFor="let item of lstcd;" [value]="item.id" >{{item.nombreCd}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Dias Alquiler</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" formControlName="diasAlquiler" placeholder="Dias Alquiler">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Valor Alquiler</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" formControlName="ValorAlquiler" placeholder="Valor Alquiler">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <button type="button" (click)='AddAlquiler()' class="btn btn-secondary">Guardar</button>
+                    <button type="button" class="btn btn-outline-dark" style="margin-left: 2%;" (click)="resetFormulario()">Cancelar</button>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+</div>

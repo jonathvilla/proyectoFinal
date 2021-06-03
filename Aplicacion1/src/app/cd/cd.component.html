@@ -1,0 +1,60 @@
+<div class="container" id="advanced-search-form">
+    <ng-container *ngIf="!crearCd; else formCd">
+        <button type="button" class="btn btn-dark btn-sm" (click)="mostrarCd()">Crear CD</button>
+        <table datatable [dtOptions]="dtOptions" class="row-border hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Condicion</th>
+                    <th>Nombre-CD</th>
+                    <th>Ubicacion</th>
+                    <th>Etado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of lstCD">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.condicion }}</td>
+                    <td>{{ item.nombreCd }}</td>
+                    <td>{{ item.ubicacion }}</td>
+                    <td>{{ item.estado? 'Activo':'Inactivo' }}</td>
+                    <td>
+                        <button type="button" class="btn btn-dark btn-sm" (click)="editCd(item)">Editar</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm" style="margin-left: 1%;" (click)="desactivarCd(item)">Deshabilitar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </ng-container>
+    <ng-template #formCd>
+        <button type="button" class="btn btn-dark btn-sm" (click)="crearCd = false">Ver cd</button>
+        <form [formGroup]="formulario">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">condicion</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" formControlName="condicion" [ngClass]="{'is-invalid':submitted && f.condicion.errors}" placeholder="Condicion">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Nombre-CD</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" formControlName="nombreCd" placeholder="Num-cd">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Ubicacion</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" formControlName="ubicacion" placeholder="Ubicacion">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <button type="button" *ngIf="!btnEditar" (click)="AddCds()" class="btn btn-secondary">Guardar</button>
+                    <button type="button" *ngIf="btnEditar" (click)="updateCd()" class="btn btn-secondary">Editar</button>
+                    <button type="button" class="btn btn-outline-dark" style="margin-left: 2%;" (click)="resetFormulario()">Cancelar</button>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+</div>
