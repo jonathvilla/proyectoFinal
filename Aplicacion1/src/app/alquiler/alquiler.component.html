@@ -1,7 +1,7 @@
 <div class="container" id="advanced-search-form">
     <ng-container *ngIf="!crearAlquiler else formAlquiler">
         <button type="button" class="btn btn-dark btn-sm" (click)="crearAlquiler = true">crear alquiler</button>
-        <table datatable [dtOptions]="dtOptions" class="row-border hover">
+        <table datatable [dtOptions]="dtOptions" class="row-border hover table-responsive">
             <thead>
                 <tr>
                     <th>Código de Alquiler</th>
@@ -14,14 +14,14 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of lstAlquiler">
-                    <td>{{ item.CodigoAlquiler }}</td>
-                    <td>{{ item.FechaAlquiler.substring(0,10) }}</td>
-                    <td>{{ item.Cliente.nombre + ' ' + item.cliente.apellido }}</td>
-                    <td>{{ item.CdId }}</td>
-                    <td>{{ item.diasAlquiler }}</td>
-                    <td>{{ item.ValorAlquiler }}</td>
+
+                    <td>{{ item.codigoAlquiler }}</td>
+                    <td>{{ item.fechaAlquiler.substring(0,10) }}</td>
+                    <td>{{ item.cliente.nombre }}</td>
+                    <td>{{ item.detallesAlquilers[0]?.nombre }}, {{ item.detallesAlquilers[1]?.nombre }}</td>
+                    <td>{{ item.valorAlquiler }}</td>
                     <td>
-                        <button type="button" class="btn btn-dark btn-sm" (click)="detalleAlquiler(item.detalleAlquiler, item.CodigoAlquiler)">Detalle</button>
+                        <button type="button" class="btn btn-dark btn-sm" (click)="detalleAlquiler(item)">Detalle</button>
                         <button *ngIf="item.fechaAlquiler < fechaActual" type="button" class="btn btn-outline-danger btn-sm" style="margin-left: 1%;" (click)="sancionar(item.cliente.Id, item.Id)">Sancionar</button>
                     </td>
                 </tr>
@@ -30,7 +30,8 @@
         <br>
         <div *ngIf="mostrarDetalle">
             <button type="button" class="btn btn-dark btn-sm" (click)="mostrarDetalle = false">ocultar detalle</button>
-            <app-detalle-alquiler [lstDetalles]="detalle_Alquiler()" [codigo]="codigo_Alquiler"></app-detalle-alquiler>
+            <h1>{{detalle_Alquiler}}</h1>
+            <app-detalle-alquiler [lstDetalles]="detalles_Alquiler" [codigo]="codigo_Alquiler"></app-detalle-alquiler>
         </div>
     </ng-container>
 
@@ -40,7 +41,7 @@
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Código alquiler</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" formControlName="CodigoAlquiler" [ngClass]="{ 'is-invalid': submitted && f.CodigoAlquiler.errors }" placeholder="Código Alquiler">
+                    <input type="text" class="form-control" formControlName="CodigoAlquiler" [ngClass]="{ 'is-invalid': submitted && f.CodigoAlquiler.errors }" placeholder="Código Alquiler">
                     <div *ngIf="submitted && f.CodigoAlquiler.errors" class="invalid-feedback">
                         <div *ngIf="f.CodigoAlquiler.errors.required">El código es requerido</div>
                     </div>
@@ -56,14 +57,14 @@
                 <label for="inputPassword" class="col-sm-2 col-form-label">Clientes</label>
                 <div class="col-sm-10">
                     <select class="form-control" formControlName="ClienteId" [ngClass]="{ 'is-invalid': submitted && f.ClienteId.errors }">
-                        <option *ngFor="let item of lstClientes;" [value]="item.id" >{{item.nombre + ' ' + item.apellido}}</option>
+                        <option *ngFor="let item of lstClientes;" [value]="item.id" >{{item.nombre}}</option>
                     </select>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="inputPassword" class="col-sm-2 col-form-label">CDS</label>
                 <div class="col-sm-10">
-                    <select class="form-control" formControlName="CdId" multiple [ngClass]="{ 'is-invalid': submitted && f.CdId.errors }">
+                    <select class="form-control" formControlName="CdIds" multiple [ngClass]="{ 'is-invalid': submitted && f.CdIds.errors }">
                         <option *ngFor="let item of lstcd;" [value]="item.id" >{{item.nombreCd}}</option>
                     </select>
                 </div>

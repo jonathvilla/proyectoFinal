@@ -5,6 +5,7 @@ import Swal from 'sweetalert2'
 import {Alquiler} from '../models/Alquiler';
 import { ApiAlquilerService } from '../services/api-alquiler.service';
 
+
 @Component({
   selector: 'app-alquiler',
   templateUrl: './alquiler.component.html',
@@ -16,7 +17,7 @@ export class AlquilerComponent implements OnInit {
   submitted:boolean = false;
   alquiler: Alquiler = {} as Alquiler;
   lstAlquiler: any;
-  lstClientes: any[];
+  lstClientes: any;
   fechaActual: any;
   lstcd: any;
   dtOptions: DataTables.Settings = {};
@@ -31,7 +32,7 @@ export class AlquilerComponent implements OnInit {
     ClienteId: ['',Validators.required],
     FechaAlquiler: ['',Validators.required],
     diasAlquiler: ['',Validators.required],
-    CdId: ['',Validators.required],
+    CdIds: ['',Validators.required],
     ValorAlquiler: ['',Validators.required]
   })
 
@@ -40,6 +41,7 @@ export class AlquilerComponent implements OnInit {
       pagingType: 'full_numbers',
       pageLength: 10
     };
+    this.getalquiler();
     this.getcds();
     this.getclientes();
     this.getcd();
@@ -59,6 +61,19 @@ export class AlquilerComponent implements OnInit {
       {
         //console.log(response.datos);
         this.lstClientes = response.datos;
+      }
+    })
+  }
+
+  // metodo para listar los detalles
+  getalquiler(){
+    console.log("si");
+    this.ApiAlquiler.GetAlquiler().subscribe(response=>{
+      console.log(response);
+      if(response.exito == 1)
+      {
+        //console.log(response.datos);
+        this.lstAlquiler = response.datos;
       }
     })
   }
@@ -88,6 +103,7 @@ export class AlquilerComponent implements OnInit {
       return;
     }
 
+
     Swal.fire({
       title: 'Alquiler',
       text: '¿Desea guardar el alquiler?',
@@ -98,10 +114,11 @@ export class AlquilerComponent implements OnInit {
     }).then((result) => {
       if (result.value) 
       {
-    
-        this.alquiler = Object.assign(this.alquiler, this.formulario.value);
         console.log(this.alquiler);
+        this.alquiler = Object.assign(this.alquiler, this.formulario.value);
+        this.alquiler.ClienteId = parseInt(this.alquiler.ClienteId);
         this.ApiAlquiler.AddAlquiler(this.alquiler).subscribe(response => {
+          console.log("RESPONSE " + response);
           if(response.exito == 0){
             console.log(response.mensaje);
             return;
@@ -119,11 +136,11 @@ export class AlquilerComponent implements OnInit {
   })
   }
 
-  detalleAlquiler(detalle, codigo){
-    this.detalles_Alquiler= detalle;
-    this.codigo_Alquiler = codigo;
-    this.mostrarDetalle = true;
-    console.log(detalle);
+  detalleAlquiler(item){
+    this.detalles_Alquiler=item.detallesAlquilers;
+    this.codigo_Alquiler=2;
+    this.mostrarDetalle=true;
+   // console.log(this.detalles_Alquiler);
   }
 
   sancionar(clienteId, ventaId){

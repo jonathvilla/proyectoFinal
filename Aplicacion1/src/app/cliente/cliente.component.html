@@ -1,7 +1,7 @@
 <div class="container" id="advanced-search-form">
     <ng-container *ngIf="!crearCliente; else formClientes">
         <button type="button" class="btn btn-dark btn-sm" (click)="mostrarClientes()">Crear Clientes</button>
-        <table datatable [dtOptions]="dtOptions" class="row-border hover">
+        <table datatable [dtOptions]="dtOptions" class="row-border hover table-responsive datatable  no-footer">
             <thead>
                 <tr>
                     <th>ID</th>

@@ -5,6 +5,7 @@ import { Respuesta } from '../models/respuesta';
 import { Observable } from 'rxjs';
 import {Alquiler} from '../models/Alquiler';
 
+
 const httpOption = {
   headers: new HttpHeaders({
     'Contend-Type': 'application/json'
@@ -15,6 +16,7 @@ const httpOption = {
   providedIn: 'root'
 })
 export class ApiAlquilerService {
+
 
   url: string = environment.baseUrl
   constructor(private _http: HttpClient) { }

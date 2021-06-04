@@ -10,7 +10,7 @@ import Swal from 'sweetalert2'
   styleUrls: ['./cliente.component.css']
 })
 export class ClienteComponent implements OnInit {
-  lstCliente: any;
+  lstCliente: Cliente;
   dtOptions: DataTables.Settings = {};
   cliente: Cliente = {}as Cliente;
   crearCliente:boolean = false;

@@ -1,10 +1,10 @@
 export class Alquiler{
 
 id: number;
-CodigoAlquiler: number;
-ClienteId: number;
+CodigoAlquiler: string;
+ClienteId: any;
 FechaAlquiler: Date;
-CdId:number[];
+CdIds:number[];
 diasAlquiler: number;
 ValorAlquiler: number;
 
