@@ -3,12 +3,14 @@
         <tr>
             <th>ID</th>
             <th>Nombres</th>
+            <th>Valor</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let item of lstDetalles">
             <td>{{item.id}}</td>
             <td>{{ item.nombre }}</td>
+            <td>{{ item.valorAlquiler }}</td>
         </tr>
     </tbody>
 </table>
